@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Иван Гуляев](https://up.htmlacademy.ru/javascript/26/user/211825).
-* Наставник: `Неизвестно`.
+* Наставник: [Alex Elkin](https://htmlacademy.ru/profile/alex_elkin).
 
 ---
 
