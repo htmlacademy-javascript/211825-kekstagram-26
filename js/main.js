@@ -37,40 +37,49 @@ const NAMES = [
   'Аида'
 ];
 
-const IMAGE_COMMENTS_COUNT = 3;
+const DESCRIPTIONS = [
+  'Это фото просто пушка, бомба, петарда!',
+  'Привет из Вологды!',
+  'Случайный ренессанс',
+  'Встал с утра - сделал селфи! ',
+  'Что-то такое, ну как вам?'
+];
+
 const IMAGE_COUNT = 25;
 
-const getMessage = function () {
-  return MESSAGES[getNumber(MESSAGES.length - 1, 0)];
+const getElementFromArray = function (array) {
+  return array[getNumber(array.length - 1, 0)];
 };
 
-const getComment = function (id) {
+let commentId = 1;
+
+const getComment = function () {
   return {
-    id,
+    id: commentId++,
     avatar: `img/avatar-${getNumber(6, 1)}.svg`,
-    message: getMessage(),
-    name: NAMES[getNumber(NAMES.length - 1, 0)],
+    message: getElementFromArray(MESSAGES),
+    name: getElementFromArray(NAMES),
   };
 };
 
-const createComments = function (count) {
-  const comments = [];
-  for (let i = 1; i <= count; i++) {
-    comments.push(getComment(i));
-  }
-  return comments;
-};
+// const createComments = function (count) {
+//   const comments = [];
+//   for (let i = 1; i <= count; i++) {
+//     comments.push(getComment(i));
+//   }
+//   return comments;
+// };
 
-const imageComments = createComments(IMAGE_COMMENTS_COUNT);
+// const imageComments = createComments(IMAGE_COMMENTS_COUNT);
 
 
 const getImageProperties = function (id) {
   return {
     id,
     url: `photos/${id}.jpg`,
-    description: 'Это фото просто пушка, бомба, петарда!',
+    description: getElementFromArray(DESCRIPTIONS),
     likes: getNumber(200, 15),
-    comments: imageComments
+    comments: Array.from({length: getNumber(5, 1)}, getComment)
   };
 };
 
@@ -82,10 +91,6 @@ const createImages = function (count) {
   return images;
 };
 const allImages = createImages(IMAGE_COUNT);
-
-// console.log(getMessage());
-// console.log(getComment());
-// console.log(imageComments);
 
 // eslint-disable-next-line no-console
 console.log(allImages);
