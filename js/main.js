@@ -83,7 +83,10 @@ const createImages = function (count) {
 };
 const allImages = createImages(IMAGE_COUNT);
 
-console.log(getMessage());
-console.log(getComment());
-console.log(imageComments);
+// console.log(getMessage());
+// console.log(getComment());
+// console.log(imageComments);
+
+// eslint-disable-next-line no-console
 console.log(allImages);
+
