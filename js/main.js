@@ -1,4 +1,4 @@
-import './util.js';
-import './data.js';
+import {allImages} from './data.js';
+import './thumbnails-render.js';
 
-
+allImages();
