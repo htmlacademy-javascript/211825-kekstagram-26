@@ -32,32 +32,32 @@ const IMAGE_COUNT = 25;
 
 let commentId = 1;
 
-const getComment = function () {
+function getComment() {
   return {
     id: commentId++,
     avatar: `img/avatar-${getNumber(6, 1)}.svg`,
     message: getElementFromArray(MESSAGES),
     name: getElementFromArray(NAMES),
   };
-};
+}
 
-const getImageProperties = function (id) {
+function getImageProperties(id) {
   return {
     id,
     url: `photos/${id}.jpg`,
     description: getElementFromArray(DESCRIPTIONS),
     likes: getNumber(200, 15),
-    comments: Array.from({length: getNumber(5, 1)}, getComment)
+    comments: Array.from({ length: getNumber(5, 1) }, getComment)
   };
-};
+}
 
-const createImages = function (count) {
+function createImages(count) {
   const images = [];
   for (let i = 1; i <= count; i++) {
     images.push(getImageProperties(i));
   }
   return images;
-};
+}
 const allImages = createImages(IMAGE_COUNT);
 
 export {allImages};

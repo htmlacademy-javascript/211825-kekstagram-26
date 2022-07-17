@@ -15,12 +15,12 @@ function checkLength(checkedString, maxLength) {
 }
 
 
-const getElementFromArray = function (array) {
+function getElementFromArray(array) {
   return array[getNumber(array.length - 1, 0)];
-};
+}
 
-const isEscapeKey = function (evt) {
+function isEscapeKey(evt) {
   return evt.key === 'Escape';
-};
+}
 
 export {getNumber, getElementFromArray, checkLength, isEscapeKey};
