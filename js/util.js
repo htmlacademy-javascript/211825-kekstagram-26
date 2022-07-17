@@ -19,4 +19,8 @@ const getElementFromArray = function (array) {
   return array[getNumber(array.length - 1, 0)];
 };
 
-export {getNumber, getElementFromArray, checkLength};
+const isEscapeKey = function (evt) {
+  return evt.key === 'Escape';
+};
+
+export {getNumber, getElementFromArray, checkLength, isEscapeKey};

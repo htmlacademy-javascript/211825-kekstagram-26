@@ -1,8 +1,11 @@
+import {picturesList} from './thumbnails-render.js';
+import {isEscapeKey} from './util.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 
-const getSingleComment = function ({avatar, message, name}) {
+const getSingleComment = function ({ avatar, message, name }) {
   const bigPictureComment = document.createElement('li');
   bigPictureComment.classList.add('.social__comment');
   const socialPicture = document.createElement('img');
@@ -34,23 +37,51 @@ const bigPictureClose = function () {
 };
 
 bigPictureCloseButton.addEventListener('click', bigPictureClose);
-document.addEventListener('keypress', (evt) => {
-  if (evt.keyCode === 27) {
+
+bigPictureCloseButton.addEventListener('click', bigPictureClose);
+document.addEventListener('keydown', (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
     bigPictureClose();
   }
 });
 
-const bigPictureRender = function ({url, likes, comments, description }) {
-  bigPicture.querySelector('.big-picture__img img').src = url;
-  bigPicture.querySelector('.likes-count').textContent = likes;
-  bigPicture.querySelector('.comments-count').textContent = comments.length;
-  bigPicture.querySelector('.social__comments').textContent = comments.length;
-  bigPicture.querySelector('.social__caption').textContent = description;
-  bigPicture.querySelector('.social__comments').appendChild(createSocialComments(comments));
+const bigPictureOpen = function () {
   bigPicture.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
   document.body.classList.add('modal-open');
 };
 
+const bigPictureRender = function ({url, likes, comments, description}) {
+  bigPicture.querySelector('.big-picture__img img').src = url;
+  bigPicture.querySelector('.likes-count').textContent = likes;
+  bigPicture.querySelector('.comments-count').textContent = comments.length;
+  bigPicture.querySelector('.social__comments').textContent = comments.length;
+  bigPicture.querySelector('.social__caption').textContent = description;
+  bigPicture.querySelector('.social__comments').appendChild(createSocialComments(comments));
+  bigPictureOpen();
+};
+
+picturesList.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  if (evt.target.id) {
+    const picturesListArray = picturesList.children;
+    picturesListArray.find(
+      (item) => {
+        if (item.id === evt.target.id) {
+          bigPictureRender(item);
+        }
+      });
+  }
+});
+
+
+// const picturesListArray = picturesList.children;
+// console.log(picturesListArray);
+
 export {bigPictureRender};
+
+// получаешь id от евент таргет. И по массиву ищешь методом find()
+// делай проверку на айди
+// И когда найдешь нужный обьект с фото его передаешь функции рендера.
