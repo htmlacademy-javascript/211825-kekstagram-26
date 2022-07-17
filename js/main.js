@@ -1,4 +1,6 @@
 import {allImages} from './data.js';
-import './thumbnails-render.js';
+import {thumbnailsRender} from './thumbnails-render.js';
+import {initBigPicture} from './big-picture-render.js';
 
-allImages();
+thumbnailsRender(allImages);
+initBigPicture(allImages);
