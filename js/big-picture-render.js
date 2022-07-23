@@ -1,10 +1,10 @@
-import {picturesList} from './thumbnails-render.js';
 import {isEscapeKey} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
+const picturesList = document.querySelector('.pictures');
 
 function onBigPictureEscKeydown(evt) {
   if (isEscapeKey(evt)) {
@@ -17,6 +17,7 @@ function bigPictureClose() {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
+  bigPictureCloseButton.removeEventListener('click', bigPictureClose);
   document.removeEventListener('keydown', onBigPictureEscKeydown);
 }
 
@@ -26,12 +27,9 @@ function bigPictureOpen() {
   commentsLoader.classList.add('hidden');
   document.body.classList.add('modal-open');
 
+  bigPictureCloseButton.addEventListener('click', bigPictureClose);
   document.addEventListener('keydown', onBigPictureEscKeydown);
 }
-
-bigPictureCloseButton.addEventListener('click', () => {
-  bigPictureClose();
-});
 
 function getSingleComment({ avatar, message, name }) {
   const bigPictureComment = document.createElement('li');
