@@ -2,6 +2,8 @@ import {isEscapeKey} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const socialCommentCount = document.querySelector('.social__comment-count');
+socialCommentCount.innerHTML = '<span class="visible-comments-count"></span> из <span class="comments-count"></span> комментариев';
+const visibleCommentsCount = document.querySelector('.visible-comments-count');
 const visibleComments = bigPicture.querySelector('.social__comments');
 const commentsCount =  bigPicture.querySelector('.comments-count');
 const commentsLoaderButton = document.querySelector('.comments-loader');
@@ -21,6 +23,7 @@ function bigPictureClose() {
 
   bigPictureCloseButton.removeEventListener('click', bigPictureClose);
   document.removeEventListener('keydown', onBigPictureEscKeydown);
+  commentsLoaderButton.removeEventListener('click', loadMoreComments);
 }
 
 function bigPictureOpen() {
@@ -29,7 +32,7 @@ function bigPictureOpen() {
 
   bigPictureCloseButton.addEventListener('click', bigPictureClose);
   document.addEventListener('keydown', onBigPictureEscKeydown);
-  // commentsLoaderButton.addEventListener('click', loadMoreComments);
+  commentsLoaderButton.addEventListener('click', loadMoreComments);
 }
 
 function getSingleComment({ avatar, message, name }) {
@@ -56,40 +59,52 @@ function createSocialComments(comments) {
   return socialComments;
 }
 
+function setVisibleCommentsCount(comments) {
+  visibleCommentsCount.textContent = '5';
+  if (comments.length < 5) {
+    visibleCommentsCount.textContent = comments.length;
+  }
+};
+
 function bigPictureRender({ url, likes, comments, description }) {
   bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
   commentsCount.textContent = comments.length;
+  visibleCommentsCount.textContent = comments.length;
+  setVisibleCommentsCount(comments);
   bigPicture.querySelector('.social__comments').textContent = '';
   bigPicture.querySelector('.social__caption').textContent = description;
   visibleComments.appendChild(createSocialComments(comments.slice(0, 5)));
   bigPictureOpen();
 }
 
-function loadMoreComments(comments) {
-  // const allCommentsList = comments.slice();
-  const lastVisibleCommentsIndex = visibleComments.length - 1;
-  if (comments.length <= 5) {
-    commentsLoaderButton.classList.add('hidden');
+// let loadCommentsHandler = null;
 
-    commentsLoaderButton.removeEventListener('click', loadMoreComments);
+function loadMoreComments(comments) {
+  // console.log(comments);
+  const photoCommentsList = comments.slice();
+  console.log(photoCommentsList);
+  if (photoCommentsList.length <= 5) {
+    commentsLoaderButton.classList.add('hidden');
   } else {
-    visibleComments.appendChild(createSocialComments(comments.slice(0, (lastVisibleCommentsIndex + 5))));
+    const lastVisibleCommentsIndex = visibleComments.length - 1;
+    visibleComments.appendChild(createSocialComments(photoCommentsList.slice(0, (lastVisibleCommentsIndex + 5))));
+    visibleCommentsCount.textContent = Number(visibleCommentsCount.textContent) + 5;
 
     commentsLoaderButton.addEventListener('click', loadMoreComments);
   }
 }
 
-// function onCommentsLoaderButtonClick() {
+// function onCommentsLoaderButtonClick(comments) {
 //   if (comments.length <= 5) {
 //     commentsLoaderButton.classList.add('hidden');
-//     commentsLoaderButton.removeEventListener('click', loadMoreComments);
-//   } else {
+//     // socialCommentCount.textContent[0] = photoCommentsList.length;
 
+//     commentsLoaderButton.removeEventListener('click', onCommentsLoaderButtonClick);
+//   } else {
+//     loadMoreComments();
 //   }
 // }
-
-// commentsLoaderButton.addEventListener('click', loadMoreComments);
 
 function initBigPicture(allImages) {
   picturesList.addEventListener('click', (evt) => {
@@ -97,8 +112,9 @@ function initBigPicture(allImages) {
     if (id) {
       const photo = allImages.find((item) => item.id === parseInt(id, 10));
       bigPictureRender(photo);
+      loadMoreComments(photo.comments);
     }
-    loadMoreComments(allImages);
+
   });
 }
 
