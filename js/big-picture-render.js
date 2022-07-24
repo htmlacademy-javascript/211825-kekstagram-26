@@ -64,7 +64,7 @@ function setVisibleCommentsCount(comments) {
   if (comments.length < 5) {
     visibleCommentsCount.textContent = comments.length;
   }
-};
+}
 
 function bigPictureRender({ url, likes, comments, description }) {
   bigPicture.querySelector('.big-picture__img img').src = url;
@@ -83,7 +83,7 @@ function bigPictureRender({ url, likes, comments, description }) {
 function loadMoreComments(comments) {
   // console.log(comments);
   const photoCommentsList = comments.slice();
-  console.log(photoCommentsList);
+  // console.log(photoCommentsList);
   if (photoCommentsList.length <= 5) {
     commentsLoaderButton.classList.add('hidden');
   } else {
