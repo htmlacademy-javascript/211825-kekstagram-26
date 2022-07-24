@@ -121,8 +121,12 @@ pristine.addValidator(
 );
 
 // слушатель формы
-imgUploadsForm.addEventListener('submit', () => {
-  pristine.validate();
+imgUploadsForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    imgUploadsForm.submit();
+  }
 });
 
 export {onUploadFileChange};
