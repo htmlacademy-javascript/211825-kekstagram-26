@@ -20,4 +20,4 @@ function thumbnailsRender(photoArray) {
   picturesList.appendChild(picturesListFragment);
 }
 
-export {thumbnailsRender, picturesList};
+export {thumbnailsRender};
