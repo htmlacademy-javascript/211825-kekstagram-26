@@ -1,8 +1,9 @@
 import {isEscapeKey} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
-// const socialCommentCount = document.querySelector('.social__comment-count');
-// const commentsLoader = document.querySelector('.comments-loader');
+const socialCommentCount = document.querySelector('.social__comment-count');
+let visibleComments = bigPicture.querySelector('.social__comments');
+const commentsLoaderButton = document.querySelector('.comments-loader');
 const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
 const picturesList = document.querySelector('.pictures');
 
@@ -24,7 +25,7 @@ function bigPictureClose() {
 function bigPictureOpen() {
   bigPicture.classList.remove('hidden');
   // socialCommentCount.classList.add('hidden');
-  // commentsLoader.classList.add('hidden');
+  // commentsLoaderButton.classList.add('hidden');
   document.body.classList.add('modal-open');
 
   bigPictureCloseButton.addEventListener('click', bigPictureClose);
@@ -61,9 +62,22 @@ function bigPictureRender({ url, likes, comments, description }) {
   bigPicture.querySelector('.comments-count').textContent = comments.length;
   bigPicture.querySelector('.social__comments').textContent = '';
   bigPicture.querySelector('.social__caption').textContent = description;
-  bigPicture.querySelector('.social__comments').appendChild(createSocialComments(comments));
+  visibleComments.appendChild(createSocialComments(comments.slice(0, 5)));
   bigPictureOpen();
+  // if (comments.length % 5 === 0) {
+  //   commentsLoaderButton.classList.add('hidden');
+  // }
 }
+
+function onCommentsLoaderButtonClick(comments) {
+  // const allComments = comments.slice();
+  // visibleComments.innerHTML = '';
+  const lastVisibleCommentsIndex = visibleComments.length - 1;
+  visibleComments = comments.slice(lastVisibleCommentsIndex, (lastVisibleCommentsIndex + 5));
+  return visibleComments;
+}
+
+commentsLoaderButton.addEventListener('click', onCommentsLoaderButtonClick);
 
 function initBigPicture(allImages) {
   picturesList.addEventListener('click', (evt) => {
