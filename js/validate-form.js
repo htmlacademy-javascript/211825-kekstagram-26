@@ -22,8 +22,6 @@ const commentInput = document.querySelector('.text__description');
 const uploadFileInput = document.querySelector('#upload-file');
 const uploadCancelButton = document.querySelector('#upload-cancel');
 
-uploadFileInput.addEventListener('change', onUploadFileChange);
-
 function onOpenUploadFormEscKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -44,6 +42,8 @@ function onUploadFileChange(evt) {
   document.addEventListener('keydown', onOpenUploadFormEscKeydown);
 }
 
+uploadFileInput.addEventListener('change', onUploadFileChange);
+
 function onUploadCancelButtonClick() {
   document.querySelector('.img-upload__overlay').classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -55,6 +55,7 @@ function onUploadCancelButtonClick() {
 
 const imgUploadsForm = document.querySelector('#upload-select-image');
 
+// валидация
 const pristine = new Pristine(imgUploadsForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
@@ -105,11 +106,7 @@ pristine.addValidator(
   'Один и тот же хэш-тег не может быть использован дважды'
 );
 
-imgUploadsForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
-
+// проверка на длинну строки для textarea
 function checkLength(checkedString) {
   if (checkedString.length <=  COMMENT_MAX_LENGTH) {
     return true;
@@ -122,3 +119,10 @@ pristine.addValidator(
   checkLength,
   'Длина комментария не более 140 символов'
 );
+
+// слушатель формы
+imgUploadsForm.addEventListener('submit', () => {
+  pristine.validate();
+});
+
+export {onUploadFileChange};

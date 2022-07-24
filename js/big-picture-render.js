@@ -1,8 +1,8 @@
 import {isEscapeKey} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
-const socialCommentCount = document.querySelector('.social__comment-count');
-const commentsLoader = document.querySelector('.comments-loader');
+// const socialCommentCount = document.querySelector('.social__comment-count');
+// const commentsLoader = document.querySelector('.comments-loader');
 const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
 const picturesList = document.querySelector('.pictures');
 
@@ -23,8 +23,8 @@ function bigPictureClose() {
 
 function bigPictureOpen() {
   bigPicture.classList.remove('hidden');
-  socialCommentCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
+  // socialCommentCount.classList.add('hidden');
+  // commentsLoader.classList.add('hidden');
   document.body.classList.add('modal-open');
 
   bigPictureCloseButton.addEventListener('click', bigPictureClose);
