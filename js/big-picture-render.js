@@ -32,6 +32,7 @@ function bigPictureClose() {
 function bigPictureOpen() {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  commentsLoaderButton.classList.remove('hidden');
 
   bigPictureCloseButton.addEventListener('click', bigPictureClose);
   document.addEventListener('keydown', onBigPictureEscKeydown);
@@ -62,44 +63,40 @@ function createSocialComments(comments) {
   return socialComments;
 }
 
-function setVisibleCommentsCount(comments) {
-  visibleCommentsCount.textContent = '5';
-  if (comments.length < 5) {
-    visibleCommentsCount.textContent = comments.length;
-  }
-}
-
 function bigPictureRender({ url, likes, comments, description }) {
   bigPicture.querySelector('.big-picture__img img').src = url;
   bigPicture.querySelector('.likes-count').textContent = likes;
   commentsCount.textContent = comments.length;
-  setVisibleCommentsCount(comments);
   bigPicture.querySelector('.social__comments').textContent = '';
   bigPicture.querySelector('.social__caption').textContent = description;
-  visibleComments.appendChild(createSocialComments(comments.slice(0, 5)));
   bigPictureOpen();
 }
 
-function loadMoreComments(comments) {
-  photoComments = comments.slice();
-  console.log(photoComments);
-  if (photoComments.length <= 5) {
-    // photoComments.slice(0, 5);
+function loadMoreComments() {
+  if (photoComments.length === 0) {
+    visibleCommentsCount.textContent = '0';
     commentsLoaderButton.classList.add('hidden');
-
     commentsLoaderButton.removeEventListener('click', loadMoreComments);
-  } else {
-    const lastVisibleCommentsIndex = visibleComments.length - 1;
-    visibleComments.appendChild(createSocialComments(photoComments.slice(0, (lastVisibleCommentsIndex + 5))));
-    visibleCommentsCount.textContent = Number(visibleCommentsCount.textContent) + 5;
-
-    commentsLoaderButton.addEventListener('click', loadMoreComments);
-    if (photoComments.length === 0) {
-      commentsLoaderButton.classList.add('hidden');
-
-      commentsLoaderButton.removeEventListener('click', loadMoreComments);
-    }
+    return;
   }
+
+  if (photoComments.length <= 5) {
+    visibleCommentsCount.textContent = commentsCount.textContent;
+    commentsLoaderButton.classList.add('hidden');
+    commentsLoaderButton.removeEventListener('click', loadMoreComments);
+    visibleComments.appendChild(createSocialComments(photoComments));
+    return;
+  }
+
+  if (photoComments.length < 5) {
+    visibleCommentsCount.textContent = commentsCount.textContent;
+    return;
+  }
+  visibleCommentsCount.textContent = visibleComments.children.length + 5;
+  visibleComments.appendChild(createSocialComments(photoComments.splice(0, 5)));
+
+  commentsLoaderButton.addEventListener('click', loadMoreComments);
+
 }
 
 
@@ -109,13 +106,10 @@ function initBigPicture(allImages) {
     if (id) {
       const photo = allImages.find((item) => item.id === parseInt(id, 10));
       bigPictureRender(photo);
-      loadMoreComments(photo.comments);
+      photoComments = photo.comments.slice();
+      loadMoreComments();
     }
   });
 }
 
 export {initBigPicture};
-
-// Покажите блоки счётчика комментариев .social__comment-count и загрузки новых комментариев .comments-loader, убрав у них класс hidden.
-
-// В модуле, который отвечает за отрисовку окна с полноразмерным изображением, доработайте код по выводу списка комментариев таким образом, чтобы список показывался не полностью, а по 5 элементов, и следующие 5 элементов добавлялись бы по нажатию на кнопку «Загрузить ещё». Не забудьте реализовать обновление числа показанных комментариев в блоке .social__comment-count.
