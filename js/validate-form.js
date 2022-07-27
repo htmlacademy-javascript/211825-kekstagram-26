@@ -42,7 +42,10 @@ function onUploadFileChange(evt) {
   document.addEventListener('keydown', onOpenUploadFormEscKeydown);
 }
 
-uploadFileInput.addEventListener('change', onUploadFileChange);
+function formRender() {
+  uploadFileInput.addEventListener('change', onUploadFileChange);
+}
+
 
 function onUploadCancelButtonClick() {
   document.querySelector('.img-upload__overlay').classList.add('hidden');
@@ -129,4 +132,4 @@ imgUploadsForm.addEventListener('submit', (evt) => {
   }
 });
 
-export {onUploadFileChange};
+export {formRender};

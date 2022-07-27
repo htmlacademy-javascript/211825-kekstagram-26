@@ -47,7 +47,7 @@ function getImageProperties(id) {
     url: `photos/${id}.jpg`,
     description: getElementFromArray(DESCRIPTIONS),
     likes: getNumber(200, 15),
-    comments: Array.from({ length: getNumber(5, 1) }, getComment)
+    comments: Array.from({ length: getNumber(15, 1) }, getComment)
   };
 }
 
