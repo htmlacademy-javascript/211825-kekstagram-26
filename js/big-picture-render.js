@@ -88,10 +88,6 @@ function loadMoreComments() {
     return;
   }
 
-  if (photoComments.length < 5) {
-    visibleCommentsCount.textContent = commentsCount.textContent;
-    return;
-  }
   visibleCommentsCount.textContent = visibleComments.children.length + 5;
   visibleComments.appendChild(createSocialComments(photoComments.splice(0, 5)));
 
