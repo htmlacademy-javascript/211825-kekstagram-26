@@ -53,7 +53,7 @@ noUiSlider.create(effectLevelSlider, {
 
 effectLevelSlider.noUiSlider.on('update', () => {
   effectLevelValue.value = effectLevelSlider.noUiSlider.get();
-  console.log(effectLevelValue.value);
+  // console.log(effectLevelValue.value);
 });
 
 effectsList.addEventListener('change', (evt) => {
